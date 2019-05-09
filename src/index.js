@@ -29,17 +29,18 @@ class Sidekiq {
   enqueue = (workerClass, args, payload = {}, cb = () => {}) => {
     const self = this;
     const jid = this.generateJobId();
-    const now = +new Date();
+    const now = new Date().getTime() / 1000;
 
     payload["class"] = workerClass;
     payload.args = args;
     payload.jid = jid;
-    payload.retry = true;
     payload.created_at = now;
     payload.enqueued_at = now;
 
+    if (typeof payload.retry === "undefined") payload.retry = true;
+
     if (payload.at instanceof Date) {
-      payload.enqueued_at = +payload.at;
+      payload.enqueued_at = payload.at.getTime() / 1000;
       this.redisConnection.zadd(
         this.namespaceKey("schedule"),
         payload.enqueued_at,

@@ -50,16 +50,16 @@ var Sidekiq = function Sidekiq(redisConnection) {
 
     var jid = _this.generateJobId();
 
-    var now = +new Date();
+    var now = new Date().getTime() / 1000;
     payload["class"] = workerClass;
     payload.args = args;
     payload.jid = jid;
-    payload.retry = true;
     payload.created_at = now;
     payload.enqueued_at = now;
+    if (typeof payload.retry === "undefined") payload.retry = true;
 
     if (payload.at instanceof Date) {
-      payload.enqueued_at = +payload.at;
+      payload.enqueued_at = payload.at.getTime() / 1000;
 
       _this.redisConnection.zadd(_this.namespaceKey("schedule"), payload.enqueued_at, JSON.stringify(payload), cb);
     } else {
