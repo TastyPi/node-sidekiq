@@ -41,6 +41,7 @@ class Sidekiq {
 
     if (payload.at instanceof Date) {
       payload.enqueued_at = payload.at.getTime() / 1000;
+      payload.at = payload.enqueued_at;
       this.redisConnection.zadd(
         this.namespaceKey("schedule"),
         payload.enqueued_at,

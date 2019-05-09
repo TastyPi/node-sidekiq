@@ -60,6 +60,7 @@ var Sidekiq = function Sidekiq(redisConnection) {
 
     if (payload.at instanceof Date) {
       payload.enqueued_at = payload.at.getTime() / 1000;
+      payload.at = payload.enqueued_at;
 
       _this.redisConnection.zadd(_this.namespaceKey("schedule"), payload.enqueued_at, JSON.stringify(payload), cb);
     } else {
