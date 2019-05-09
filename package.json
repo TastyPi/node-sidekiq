@@ -1,6 +1,6 @@
 {
     "name": "sidekiq-client",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "description": "Enqueue sidekiq jobs from your node apps.",
     "main": "build/index.js",
     "scripts": {
