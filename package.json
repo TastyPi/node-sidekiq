@@ -1,13 +1,13 @@
 {
     "name": "sidekiq",
-    "version": "1.1.1",
+    "version": "1.2.1",
     "description": "Enqueue sidekiq jobs from your node apps.",
     "main": "build/index.js",
     "scripts": {
         "prebuild": "rimraf build",
         "build": "babel src --out-dir build",
         "prerelease": "yarn build",
-        "release": "cd build && npm publish"
+        "release": "npm publish"
     },
     "repository": {
         "type": "git",
