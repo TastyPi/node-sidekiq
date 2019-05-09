@@ -9,7 +9,7 @@ Installation
 ------------
 
 ```shell
-npm install sidekiq --save
+npm install sidekiq-client --save
 ```
 
 
@@ -18,7 +18,7 @@ Usage
 
 ```javascript
 // Require the module
-Sidekiq = require("sidekiq");
+Sidekiq = require("sidekiq-client");
 
 // Construct a sidekiq object with your redis connection and optional namespace
 sidekiq = new Sidekiq(redisCon, process.env.NODE_ENV);
@@ -42,9 +42,6 @@ How to Build
 ```shell
 # Install development dependencies
 npm install
-
-# Use grunt to generate the js version (lib/index.js)
-grunt
 ```
 
 
