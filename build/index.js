@@ -62,13 +62,16 @@ var Sidekiq = function Sidekiq(redisConnection) {
       payload.enqueued_at = payload.at.getTime() / 1000;
       payload.at = payload.enqueued_at;
 
-      _this.redisConnection.zadd(_this.namespaceKey("schedule"), payload.enqueued_at, JSON.stringify(payload), cb);
+      _this.redisConnection.zAdd(_this.namespaceKey("schedule"), [{
+        score: payload.enqueued_at,
+        value: JSON.stringify(payload)
+      }], cb);
     } else {
-      _this.redisConnection.lpush(_this.getQueueKey(payload.queue), JSON.stringify(payload), function (err) {
+      _this.redisConnection.lPush(_this.getQueueKey(payload.queue), JSON.stringify(payload), function (err) {
         if (err) {
           return cb(err);
         } else {
-          return self.redisConnection.sadd(self.namespaceKey("queues"), self.getQueueName(payload.queue), cb);
+          return self.redisConnection.sAdd(self.namespaceKey("queues"), self.getQueueName(payload.queue), cb);
         }
       });
     }

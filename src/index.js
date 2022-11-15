@@ -42,21 +42,21 @@ class Sidekiq {
     if (payload.at instanceof Date) {
       payload.enqueued_at = payload.at.getTime() / 1000;
       payload.at = payload.enqueued_at;
-      this.redisConnection.zadd(
+
+      this.redisConnection.zAdd(
         this.namespaceKey("schedule"),
-        payload.enqueued_at,
-        JSON.stringify(payload),
+        [{score: payload.enqueued_at, value: JSON.stringify(payload)}],
         cb
       );
     } else {
-      this.redisConnection.lpush(
+      this.redisConnection.lPush(
         this.getQueueKey(payload.queue),
         JSON.stringify(payload),
         err => {
           if (err) {
             return cb(err);
           } else {
-            return self.redisConnection.sadd(
+            return self.redisConnection.sAdd(
               self.namespaceKey("queues"),
               self.getQueueName(payload.queue),
               cb
