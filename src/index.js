@@ -43,13 +43,13 @@ class Sidekiq {
       payload.enqueued_at = payload.at.getTime() / 1000;
       payload.at = payload.enqueued_at;
 
-      this.redisConnection.zAdd(
+      return this.redisConnection.zAdd(
         this.namespaceKey("schedule"),
         [{score: payload.enqueued_at, value: JSON.stringify(payload)}],
         cb
       );
     } else {
-      this.redisConnection.lPush(
+      return this.redisConnection.lPush(
         this.getQueueKey(payload.queue),
         JSON.stringify(payload),
         err => {
